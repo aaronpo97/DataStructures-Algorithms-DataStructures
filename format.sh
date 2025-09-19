@@ -36,7 +36,7 @@ fi
 
 echo "Formatting files..."
 
-find src include \( -name "*.cpp" -o -name "*.hpp" -o -name "*.c" -o -name "*.h" \) | xargs clang-format -i
+find . \( -name "*.cpp" -o -name "*.hpp" -o -name "*.c" -o -name "*.h" \) | xargs clang-format -i
 
 echo "Done."
 

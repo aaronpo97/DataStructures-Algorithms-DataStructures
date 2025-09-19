@@ -1,10 +1,10 @@
 #pragma once
 #include <cstddef>
 #include <cstdint>
+#include <iomanip>
+#include <iostream>
 #include <stdexcept>
 #include <utility>
-#include <iostream>
-#include <iomanip>
 
 /**
  * @brief Last in, first out container (Stack).
@@ -64,38 +64,38 @@ template <typename ValueType> class Stack {
      *
      * @note The stack will be resized if it reaches capacity.
      */
-    void      push(ValueType const &);
+    void push(ValueType const &);
 
     /**
      * Take the top element off the stack.
-     * 
+     *
      * @return The element taken off the stack.
      */
     ValueType pop();
-
 
     size_t capacity() const {
         return m_capacity;
     }
 
-
     size_t size() const {
         return m_currentIndex + 1;
     }
 
-    friend std::ostream &operator<<(std::ostream &os, Stack<ValueType> const &stack) {
+    friend std::ostream &operator<<(std::ostream           &os,
+                                    Stack<ValueType> const &stack) {
         os << "\n";
-        os << std::setw(80) << std::setfill('=') << "" << std::setfill(' ') << "\n";
+        os << std::setw(80) << std::setfill('=') << "" << std::setfill(' ')
+           << "\n";
         os << std::setfill(' ');
-        os << "STACK (capacity = " << stack.capacity() << ", size = " << stack.size()
-           << ")\n";
+        os << "STACK (capacity = " << stack.capacity()
+           << ", size = " << stack.size() << ")\n";
 
         os << std::setw(80) << std::setfill('=') << "" << std::setfill(' ')
            << "\n";
 
-           for (int64_t i = stack.size() - 1; i >= 0; --i) {
+        for (int64_t i = stack.size() - 1; i >= 0; --i) {
             bool is_last = i > 0;
-            os << " [ "<< i << " ] -> " << stack.m_items[i] << "\n";
+            os << " [ " << i << " ] -> " << stack.m_items[i] << "\n";
         }
         if (stack.isEmpty()) {
             os << "<empty>\n";
@@ -109,8 +109,6 @@ template <typename ValueType> class Stack {
 
     ~Stack();
 };
-
-
 
 template <typename ValueType> void Stack<ValueType>::extendCapacity() {
     size_t const new_capacity = m_capacity * 2;
