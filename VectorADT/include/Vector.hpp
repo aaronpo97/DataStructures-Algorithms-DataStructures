@@ -2,8 +2,8 @@
 #include <algorithm>
 #include <cstddef>
 #include <initializer_list>
-#include <utility>
 #include <stdexcept>
+#include <utility>
 
 template <typename ValueType> class Vector {
   private:
@@ -13,13 +13,13 @@ template <typename ValueType> class Vector {
 
     static constexpr size_t m_extraCapacity{16};
 
-
   public:
     // default/normal constructor
     explicit Vector(size_t init_size = 0) noexcept
-        : m_size{init_size}, m_capacity{init_size + m_extraCapacity},
-          m_data{} {
+        : m_size{init_size}, m_capacity{init_size + m_extraCapacity}, m_data{} {
         m_data = new ValueType[m_capacity];
+
+        std::fill(std::begin(*this), std::end(*this), ValueType());
     }
 
     // initializer_list constructor
@@ -34,8 +34,7 @@ template <typename ValueType> class Vector {
 
     // copy constructor
     Vector(Vector const &rhs) noexcept
-        : m_size(rhs.m_size), m_capacity(rhs.m_capacity),
-          m_data() {
+        : m_size(rhs.m_size), m_capacity(rhs.m_capacity), m_data() {
         m_data = new ValueType[m_capacity];
         for (size_t i = 0; i < m_size; ++i)
             m_data[i] = rhs.m_data[i];
@@ -69,10 +68,9 @@ template <typename ValueType> class Vector {
             reserve(new_size * 2);
 
         auto old_size = m_size;
-        m_size = new_size;
+        m_size        = new_size;
 
-        for (size_t i = old_size; i < new_size; ++i)
-        {
+        for (size_t i = old_size; i < new_size; ++i) {
             m_data[i] = ValueType();
         }
     }
@@ -104,7 +102,6 @@ template <typename ValueType> class Vector {
         return m_size == 0;
     }
 
-    
     // push back (regular)
     void push_back(ValueType const &item) {
         if (m_size == m_capacity)
@@ -129,17 +126,16 @@ template <typename ValueType> class Vector {
     ValueType &back() {
         return m_data[m_size - 1];
     }
-    
+
     ValueType const &back() const {
         return m_data[m_size - 1];
     }
-
 
     // random access operations
     ValueType &operator[](size_t i) {
         return m_data[i];
     }
-    
+
     ValueType const &operator[](size_t i) const {
         return m_data[i];
     }
@@ -156,16 +152,15 @@ template <typename ValueType> class Vector {
         return m_data[i];
     }
 
-
     // iterators
     ValueType *begin() {
         return m_data;
     }
-    
+
     ValueType const *begin() const {
         return m_data;
     }
-    
+
     ValueType *end() {
         return m_data + m_size;
     }
@@ -174,4 +169,3 @@ template <typename ValueType> class Vector {
         return m_data + m_size;
     }
 };
-

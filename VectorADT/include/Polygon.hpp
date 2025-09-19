@@ -11,7 +11,7 @@ struct Polygon {
 struct Triangle : Polygon {
     double base{}, height{};
 
-    double area() const {
+    double area() const override {
         return (base * height) / 2;
     }
 
@@ -19,7 +19,7 @@ struct Triangle : Polygon {
     Triangle(double _base, double _height) : base(_base), height(_height) {
     }
 
-    std::string to_string() const {
+    std::string to_string() const override {
         std::stringstream os;
         os << "Triangle(" << base << ", " << height << ")";
         return os.str();
@@ -29,7 +29,7 @@ struct Triangle : Polygon {
 struct Rectangle : Polygon {
     double width{}, height{};
 
-    double area() const {
+    double area() const override {
         return width * height;
     }
 
@@ -37,14 +37,12 @@ struct Rectangle : Polygon {
     Rectangle(double _width, double _height) : width(_width), height(_height) {
     }
 
-    std::string to_string() const {
+    std::string to_string() const override {
         std::stringstream os;
         os << "Rectangle(" << width << ", " << height << ")";
         return os.str();
     }
 };
-
-
 
 std::ostream &operator<<(std::ostream &os, Polygon const &p) {
     os << p.to_string();

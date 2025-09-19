@@ -1,11 +1,12 @@
-#include "../include/Vector.hpp"
-#include <iostream>
-#include <stdexcept>
-#include <memory>
-#include <limits>
-#include <sstream>
-#include <algorithm>
 #include "../include/Polygon.hpp"
+#include "../include/Vector.hpp"
+#include <algorithm>
+#include <iostream>
+#include <limits>
+#include <memory>
+#include <sstream>
+#include <stdexcept>
+#include <utility>
 
 constexpr std::size_t elements_per_line = 10;
 
@@ -55,13 +56,58 @@ std::ostream &operator<<(std::ostream                     &os,
     return os;
 }
 
-
-
-
 int main() {
-    #ifdef _DEBUG
+#ifdef _DEBUG
     _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
-    #endif
+#endif
+
+    std::cout << "Testing Vector<int> constructors\n";
+    {
+        std::cout << "Default constructor:\n";
+        Vector<int> v_default;
+        std::cout << v_default;
+
+        std::cout << "Sized constructor (5):\n";
+        Vector<int> v_sized(5);
+        std::cout << v_sized;
+
+        std::cout << "Initializer_list constructor {7,8,9}:\n";
+        Vector<int> v_init{7, 8, 9};
+        std::cout << v_init;
+
+        std::cout << "Copy constructor (from v_init):\n";
+        Vector<int> v_copy(v_init);
+        std::cout << v_copy;
+
+        std::cout << "Move constructor (from v_copy):\n";
+        Vector<int> v_move(std::move(v_copy));
+        std::cout << v_move;
+    }
+
+    std::cout << "\nTesting Vector<Rectangle> constructors\n";
+    {
+        std::cout << "Default constructor:\n";
+        Vector<Rectangle> v_default;
+        std::cout << v_default;
+
+        std::cout << "Sized constructor (2):\n";
+        Vector<Rectangle> v_sized(2);
+        std::cout << v_sized;
+
+        std::cout << "Initializer_list constructor {{1,2},{3,4}}:\n";
+        Vector<Rectangle> v_init{{1,2},{3,4}};
+        std::cout << v_init;
+
+        std::cout << "Copy constructor (from v_init):\n";
+        Vector<Rectangle> v_copy(v_init);
+        std::cout << v_copy;
+
+        std::cout << "Move constructor (from v_copy):\n";
+        Vector<Rectangle> v_move(std::move(v_copy));
+        std::cout << v_move;
+    }
+
+
 
     std::cout << "Testing Vector<int> operations\n";
     {
@@ -115,9 +161,9 @@ int main() {
         std::cout << "After push_back: Rectangle(10, 10)";
         vec.push_back(Rectangle(10, 10));
         std::cout << vec;
-        
+
         std::cout << "After push_back: Rectangle(20, 10) ";
-        vec.push_back(Rectangle(20,10));
+        vec.push_back(Rectangle(20, 10));
         std::cout << vec;
 
         std::cout << "After pop_back:";
@@ -135,23 +181,20 @@ int main() {
     {
         Vector<std::shared_ptr<Polygon>> vec;
 
-
-        
         std::cout << "Empty vector: ";
         std::cout << vec;
 
-       
-        std::cout << "After push_back: std::make_shared<Rectangle>(Rectangle(10, 10))\n";
+        std::cout << "After push_back: "
+                     "std::make_shared<Rectangle>(Rectangle(10, 10))\n";
         vec.push_back(std::make_shared<Rectangle>(Rectangle(10, 10)));
-       
+
         std::cout << vec;
         std::cout << "\n";
-        
 
         std::cout
             << "After push_back: std::make_shared<Triangle>(Triangle(10, 20)\n";
         vec.push_back(std::make_shared<Triangle>(Triangle(10, 10)));
-        
+
         std::cout << vec;
         std::cout << "\n";
 
@@ -175,20 +218,40 @@ int main() {
     }
 
     {
-        Vector<uint16_t> v(100);
+        Vector<std::string> v(30);
 
-        v.resize(100);
+        std::cout << "Testing STL algorithm std::foreach with custom vector\n";
 
-        std::cout << "Testing STL algorithm std::fill with custom vector\n";
-        std::fill(std::begin(v), std::end(v),
-                  std::numeric_limits<uint64_t>::max());
+        std::for_each(std::begin(v), std::end(v),
+                      [idx = 1](std::string &el) mutable {
+                          std::stringstream ss;
+                          constexpr int     fizz = 3;
+                          constexpr int     buzz = 5;
 
+                          bool is_fizz = idx % fizz == 0;
+                          bool is_buzz = idx % buzz == 0;
+
+                          if (is_fizz)
+                              ss << "Fizz";
+
+                          if (is_buzz)
+                              ss << "Buzz";
+
+                          if (!is_fizz && !is_buzz)
+                              ss << idx;
+
+                          el = ss.str();
+                          ++idx;
+                      });
+
+        std::cout << v;
+        std::cout << "Testing STL algorithm std::reverse with custom vector\n";
+        std::reverse(std::begin(v), std::end(v));
         std::cout << v;
     }
 
-
-    #ifdef _DEBUG
+#ifdef _DEBUG
     _CrtDumpMemoryLeaks();
-    #endif
+#endif
     return EXIT_SUCCESS;
 }
