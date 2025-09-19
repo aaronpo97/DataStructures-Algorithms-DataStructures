@@ -36,7 +36,7 @@ fi
 
 echo "Formatting files..."
 
-find . \( -name "*.cpp" -o -name "*.hpp" -o -name "*.c" -o -name "*.h" \) | xargs clang-format -i
+find . -path ./build -prune -o \( -name "*.cpp" -o -name "*.hpp" -o -name "*.c" -o -name "*.h" \) -print | xargs clang-format -i
 
 echo "Done."
 
