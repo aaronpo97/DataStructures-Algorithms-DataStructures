@@ -95,7 +95,7 @@ int main() {
         std::cout << v_sized;
 
         std::cout << "Initializer_list constructor {{1,2},{3,4}}:\n";
-        Vector<Rectangle> v_init{{1,2},{3,4}};
+        Vector<Rectangle> v_init{{1, 2}, {3, 4}};
         std::cout << v_init;
 
         std::cout << "Copy constructor (from v_init):\n";
@@ -106,8 +106,6 @@ int main() {
         Vector<Rectangle> v_move(std::move(v_copy));
         std::cout << v_move;
     }
-
-
 
     std::cout << "Testing Vector<int> operations\n";
     {
