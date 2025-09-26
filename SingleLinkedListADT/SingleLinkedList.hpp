@@ -1,5 +1,7 @@
 #pragma once
 #include <cstddef>
+#include <iostream>
+#include <stdexcept>
 #include <utility>
 
 template <typename ValueType> class SingleLinkedList {
@@ -152,7 +154,7 @@ template <typename ValueType> class SingleLinkedList {
 
         Node *n       = new Node(value, current->next);
         current->next = n;
-        
+
         ++m_size;
         return iterator(n);
     }
@@ -162,14 +164,57 @@ template <typename ValueType> class SingleLinkedList {
         if (!current || !current->next)
             return end();
 
-        std::cout << "inside erase_after\n";
         Node *to_delete = current->next;
         current->next   = to_delete->next;
         delete to_delete;
-        
+
         --m_size;
-        
+
         return iterator(current->next);
+    }
+
+    void insert_middle(size_t const idx, ValueType const &value) {
+        Node *newNode = new Node(value);
+
+        // if empty
+        if (!m_head) {
+
+            if (idx != 0) {
+                throw std::invalid_argument("Invalid list location");
+            }
+
+            m_head = newNode;
+            return;
+        }
+
+        // search for preceding node
+        Node *current = m_head;
+        for (size_t i = 1; i < idx; ++i) {
+            if (!current->next)
+                throw std::invalid_argument("Invalid list location");
+
+            current = current->next;
+        }
+
+        insert_after(iterator(current), value);
+    }
+
+    void erase_middle(size_t const idx) {
+        // if empty
+        if (!m_head) {
+            throw std::invalid_argument("Invalid list location");
+        }
+
+        // search for preceding node
+        Node *current = m_head;
+        for (size_t i = 1; i < idx; ++i) {
+            if (!current->next)
+                throw std::invalid_argument("Invalid list location");
+
+            current = current->next;
+        }
+
+        erase_after(iterator(current));
     }
 
     void clear() {
@@ -180,5 +225,13 @@ template <typename ValueType> class SingleLinkedList {
             m_head = tmp;
         }
         m_size = 0;
+    }
+
+    friend std::ostream &operator<<(std::ostream &os, SingleLinkedList &ll) {
+        for (auto it = ll.begin(); it != ll.end(); ++it) {
+            os << "=> " << *it << '\n';
+        }
+
+        return os;
     }
 };

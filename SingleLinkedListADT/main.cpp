@@ -1,58 +1,66 @@
-#include <iostream>
 
 #include "SingleLinkedList.hpp"
+#include <iomanip>
+#include <iostream>
+#include <string>
 
+void print_section(std::string const &title, std::ostream &os = std::cout) {
+    os << "\n";
+    os << std::setfill('=') << std::setw(40) << "" << "\n";
+    os << title << "\n";
+    os << std::setfill('=') << std::setw(40) << "=" << "\n";
+    os << "\n";
+}
 
-int main(int, char **) {
-    {
-        std::cout << "Testing the default constructor with std::string:\n";
-    SingleLinkedList<std::string> test_ll;
-        
-        std::cout << "\ttest_ll has size 0 when first constructed: " << std::boolalpha << (test_ll.size() == 0) << "\n";
+template <typename T>
+void print_list(SingleLinkedList<T> &ll, std::string const &label = "List") {
+    std::cout << label << " (size=" << ll.size() << "):\n" << ll;
+}
 
+int main() {
+    print_section("Default Constructor & Empty List");
+    SingleLinkedList<std::string> ll;
+    std::cout << "List is empty: " << std::boolalpha << ll.empty() << "\n";
+    print_list(ll);
 
-        std::cout << "\tPushing \"Hello\" to test_ll using .push_front()\n";
-        test_ll.push_front("Hello");   
+    print_section("push_front and insert_after");
+    ll.push_front("Hello");
+    print_list(ll, "After push_front('Hello')");
 
-        std::cout << "\tPushing \"World\" to test_ll using "
-                     ".insert_after(std::begin(test_ll))\n";
+    auto it = ll.insert_after(ll.begin(), "World");
+    print_list(ll, "After insert_after(begin, 'World')");
 
-        SingleLinkedList<std::string>::iterator it = 
-            test_ll.insert_after(std::begin(test_ll), "world");
+    ll.insert_after(it, "Hi");
+    print_list(ll, "After insert_after(it, 'Hi')");
 
+    print_section("Iterator-based Traversal");
+    std::cout << "Elements: ";
+    for (auto const &val : ll)
+        std::cout << val << " ";
+    std::cout << "\n";
 
-        std::cout << "\tNow with the iterator to the \"world\"'s node, use "
-                     "insert_after to push a new string\n";
+    print_section("erase_after (remove 3rd element)");
+    auto iter = ll.begin();
+    ++iter;               // move to 2nd node
+    ll.erase_after(iter); // remove 3rd node
+    print_list(ll, "After erase_after(2nd node)");
 
-        test_ll.insert_after(it, "Hi");
+    print_section("insert_middle at index 1");
+    ll.insert_middle(1, "TEST");
+    print_list(ll, "After insert_middle(1, 'TEST')");
 
-        std::cout << "\tPrint all elements of the linked list using an iterator-based for loop:\n";
+    print_section("erase_middle at index 1");
+    ll.erase_middle(1);
+    print_list(ll, "After erase_middle(1)");
 
-        for (auto it = std::begin(test_ll); it != std::end(test_ll); ++it) {
-            std::cout << "\t\t- " << *it << '\n';
-        }
+    print_section("pop_front");
+    ll.pop_front();
+    print_list(ll, "After pop_front");
 
-        std::cout << "Remove the third element:\n";
+    print_section("clear");
+    ll.clear();
+    print_list(ll, "After clear");
 
-        size_t it_count{};
-        auto   iter = std::begin(test_ll);
-        size_t index_to_delete{3};
-        // get the index before index 3
-        while (it_count != (index_to_delete - 1)) {
-            ++iter;
-            ++it_count;
-        }
-
-    
-        std::cout << *iter << " " << it_count << "\n";
-
-        test_ll.erase_after(iter);
-      
-        
-        std::cout << test_ll.size();
-
-        
-
-    }
-
+    print_section("All tests complete");
+    return 0;
 }
