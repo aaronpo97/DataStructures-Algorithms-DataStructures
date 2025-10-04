@@ -36,8 +36,6 @@ int main() {
         std::cerr << "ERROR: " << e.what() << "\n";
     }
 
- 
-
     // Add memory leak checking code
     _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 

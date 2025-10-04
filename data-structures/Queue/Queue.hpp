@@ -2,7 +2,8 @@
 #include <iostream>
 #include <stdexcept>
 
-template <typename ValueType> class Queue {
+template <typename ValueType>
+class Queue {
     struct Node {
         ValueType data;
         Node     *next;
@@ -20,7 +21,6 @@ template <typename ValueType> class Queue {
   public:
     // constructor
     Queue() = default;
-   
 
     bool empty() const {
         return !m_front;
@@ -47,7 +47,6 @@ template <typename ValueType> class Queue {
         ++m_count;
     }
 
-
     // Remove the front node and return its value
     ValueType dequeue() {
         if (empty())
@@ -67,7 +66,7 @@ template <typename ValueType> class Queue {
         return val;
     }
 
-     ~Queue() {
+    ~Queue() {
         while (!empty())
             dequeue();
     }
@@ -86,13 +85,13 @@ template <typename ValueType> class Queue {
             return os;
         }
 
-        Node *current = q.m_front; 
+        Node *current = q.m_front;
         while (current) {
             os << current->data << ", ";
             current = current->next;
         }
 
         os << "\n";
-        return os; 
+        return os;
     }
 };

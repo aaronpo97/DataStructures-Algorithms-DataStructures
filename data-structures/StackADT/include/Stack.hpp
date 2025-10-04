@@ -47,7 +47,8 @@
  *
  */
 
-template <typename ValueType> class Stack {
+template <typename ValueType>
+class Stack {
   private:
     ValueType *m_items = nullptr;
     size_t     m_capacity;
@@ -110,7 +111,8 @@ template <typename ValueType> class Stack {
     ~Stack();
 };
 
-template <typename ValueType> void Stack<ValueType>::extendCapacity() {
+template <typename ValueType>
+void Stack<ValueType>::extendCapacity() {
     size_t const new_capacity = m_capacity * 2;
 
     ValueType *temp = new ValueType[new_capacity];
@@ -133,11 +135,13 @@ Stack<ValueType>::Stack(size_t capacity)
       m_items(new ValueType[capacity]) {
 }
 
-template <typename ValueType> Stack<ValueType>::~Stack() {
+template <typename ValueType>
+Stack<ValueType>::~Stack() {
     delete[] m_items;
 }
 
-template <typename ValueType> bool Stack<ValueType>::isEmpty() const {
+template <typename ValueType>
+bool Stack<ValueType>::isEmpty() const {
     return m_currentIndex == -1;
 }
 
@@ -149,7 +153,8 @@ void Stack<ValueType>::push(ValueType const &item) {
     m_items[++m_currentIndex] = item;
 }
 
-template <typename ValueType> ValueType Stack<ValueType>::pop() {
+template <typename ValueType>
+ValueType Stack<ValueType>::pop() {
     if (isEmpty()) {
         throw std::out_of_range("Stack is empty");
     }

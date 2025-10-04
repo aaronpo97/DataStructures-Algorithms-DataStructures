@@ -9,3 +9,4 @@ UseTab: Never
 NamespaceIndentation: All
 AllowShortFunctionsOnASingleLine: None
 IndentWidth: 4
+AlwaysBreakTemplateDeclarations: Yes

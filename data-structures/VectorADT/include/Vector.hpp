@@ -5,7 +5,8 @@
 #include <stdexcept>
 #include <utility>
 
-template <typename ValueType> class Vector {
+template <typename ValueType>
+class Vector {
   private:
     ValueType *m_data{nullptr};
     size_t     m_capacity{0};

@@ -4,7 +4,8 @@
 #include <stdexcept>
 #include <utility>
 
-template <typename ValueType> class SingleLinkedList {
+template <typename ValueType>
+class SingleLinkedList {
   private:
     struct Node {
         ValueType data;
