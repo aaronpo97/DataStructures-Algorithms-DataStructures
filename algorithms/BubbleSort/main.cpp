@@ -16,6 +16,4 @@ int main(int argc, char **argv) {
 
     std::cout << array_tester << '\n';
     std::cout << list_tester << '\n';
-
-  
 }

@@ -4,9 +4,9 @@
 #include <array>
 #include <deque>
 #include <iostream>
+#include <list>
 #include <random>
 #include <vector>
-#include <list>
 
 //@todo restrict to random access containers using c++ concepts
 
@@ -39,20 +39,19 @@ void shuffle(C &container, size_t shuffle_count = 1) {
 #if (defined(SORTED_ASC) + defined(SORTED_DESC) + defined(UNSORTED)) != 1
 #error "Define exactly one of SORTED_ASC, SORTED_DESC, or UNSORTED"
 #endif
- 
+
 constexpr static inline std::array<char, 26> const alphabet = {
     'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
     'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
 
-
 #if defined(SORTED_ASC)
 inline std::array<char, 26> array_tester = alphabet;
 #elif defined(SORTED_DESC)
-inline std::array<char, 26> array_tester = ([](){ 
-        auto copy = alphabet;
-        std::reverse(std::begin(copy), std::end(copy));
-        return copy;
-    })();
+inline std::array<char, 26> array_tester = ([]() {
+    auto copy = alphabet;
+    std::reverse(std::begin(copy), std::end(copy));
+    return copy;
+})();
 
 #elif defined(UNSORTED)
 inline std::array<char, 26> array_tester = ([]() {
@@ -61,14 +60,13 @@ inline std::array<char, 26> array_tester = ([]() {
     return copy;
 })();
 
-
 #endif
 
 inline std::vector<char> vector_tester(std::begin(array_tester),
                                        std::end(array_tester));
 
-inline std::deque<char>  deque_tester(std::begin(array_tester),
-                                      std::end(array_tester));
+inline std::deque<char> deque_tester(std::begin(array_tester),
+                                     std::end(array_tester));
 
 inline std::list<char> list_tester(std::begin(array_tester),
                                    std::end(array_tester));
